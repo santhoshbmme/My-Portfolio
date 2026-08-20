@@ -31,7 +31,11 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
       className={`mb-12 md:mb-18 flex flex-col ${isCenter ? "items-center text-center" : "items-start text-left"}`}
     >
 
-      
+      {num && (
+        <span className="text-xs font-mono text-purple-400 font-bold tracking-widest uppercase mb-3">
+          // {num}
+        </span>
+      )}
       <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white max-w-3xl leading-[1.1]">
         {title}
       </h2>

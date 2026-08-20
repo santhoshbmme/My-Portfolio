@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useCallback, FC, KeyboardEvent, MouseEvent } from 'react';
+import { useRef, useEffect, useState, useCallback, type FC, type KeyboardEvent, type MouseEvent } from 'react';
 import { gsap } from 'gsap';
 import './AccordionGallery.css';
 
@@ -239,15 +239,15 @@ const AccordionGallery: FC<AccordionGalleryProps> = ({
             aria-label={item.label}
           >
             <span className="ag-panel__frame">
-              <span className="ag-panel__media" ref={el => (mediaRefs.current[i] = el)}>
+              <span className="ag-panel__media" ref={el => { mediaRefs.current[i] = el; }}>
                 <img src={item.image} alt={item.alt || item.label || ''} draggable="false" />
               </span>
               <span className="ag-panel__overlay" aria-hidden="true" />
             </span>
             {showLabels && (
               <span className="ag-panel__label" aria-hidden="true">
-                <span className="ag-panel__bar" ref={el => (barRefs.current[i] = el)} />
-                <span className="ag-panel__text" ref={el => (textRefs.current[i] = el)}>
+                <span className="ag-panel__bar" ref={el => { barRefs.current[i] = el; }} />
+                <span className="ag-panel__text" ref={el => { textRefs.current[i] = el; }}>
                   {item.label}
                 </span>
               </span>
