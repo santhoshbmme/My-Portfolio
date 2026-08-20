@@ -1,0 +1,344 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Permanent+Marker&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-brush: 'Permanent Marker', cursive;
+  
+  --color-bg-dark: #0C0C0C;
+  --color-surface-dark: #121212;
+  --color-surface-card: rgba(255, 255, 255, 0.03);
+  --color-surface-hover: rgba(255, 255, 255, 0.06);
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --color-border-hover: rgba(255, 255, 255, 0.15);
+  
+  --shadow-glow: 0 0 30px rgba(192, 38, 211, 0.25);
+  --shadow-glow-hover: 0 0 40px rgba(192, 38, 211, 0.35);
+  
+  --animate-marquee: marquee 30s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 30s linear infinite;
+  
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes marquee-reverse {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0%); }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+  
+  body {
+    background-color: #0C0C0C;
+    color: #ffffff;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0C0C0C;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #222222;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #333333;
+  }
+  
+  /* Focus outlines for accessibility */
+  :focus-visible {
+    outline: 2px solid #a855f7;
+    outline-offset: 4px;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(135deg, #f0abfc 0%, #a855f7 50%, #f97316 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-gradient-cta {
+    background: linear-gradient(135deg, #d946ef 0%, #8b5cf6 50%, #f97316 100%);
+  }
+
+  .border-gradient-glow {
+    position: relative;
+  }
+  
+  .border-gradient-glow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(217, 70, 239, 0.4), rgba(139, 92, 246, 0.4), rgba(249, 115, 22, 0.4));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  
+  .glass-card {
+    background-color: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .glass-card:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .hazard-stripes {
+    background: repeating-linear-gradient(
+      -45deg,
+      #eab308 0px,
+      #eab308 15px,
+      #000000 15px,
+      #000000 30px
+    );
+  }
+}
+
+/* ── LIGHT THEME GLOBAL OVERRIDES (EXCEPT HERO SECTION) ───────────── */
+html.light-theme body {
+  background-color: #f8f8fa;
+  color: #0f0f14;
+}
+
+/* ABOUT SECTION DEFAULT (DARK MODE) */
+section#about {
+  background-color: #0C0C0C;
+  color: #ffffff;
+}
+
+section#about .about-heading {
+  background: linear-gradient(180deg, #FFFFFF 0%, #777777 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+section#about .about-tagline {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+section#about .about-bio {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+section#about .about-highlight {
+  color: #ffffff;
+}
+
+section#about .about-cta-btn {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+section#about .about-cta-btn:hover {
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+/* ABOUT SECTION (LIGHT MODE OVERRIDES) */
+html.light-theme section#about {
+  background-color: #ffffff !important;
+  color: #0f0f14 !important;
+}
+
+html.light-theme section#about .about-heading {
+  background: linear-gradient(180deg, #0F0F0F 0%, #666666 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+html.light-theme section#about .about-tagline {
+  color: rgba(0, 0, 0, 0.4) !important;
+}
+
+html.light-theme section#about .about-bio {
+  color: rgba(0, 0, 0, 0.8) !important;
+}
+
+html.light-theme section#about .about-highlight {
+  color: #000000 !important;
+}
+
+html.light-theme section#about .about-cta-btn {
+  background-color: #0F0F0F !important;
+  color: #ffffff !important;
+}
+
+html.light-theme section#about .about-cta-btn:hover {
+  background-color: #222222 !important;
+}
+
+/* SERVICES SECTION & BENTO CARDS */
+html.light-theme section#services {
+  background-color: #f2f2f6 !important;
+}
+
+html.light-theme section#services h2 {
+  background: linear-gradient(180deg, #111116 40%, #666666 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+html.light-theme section#services .text-white\/50,
+html.light-theme section#services .text-white\/40,
+html.light-theme section#services .text-white\/60,
+html.light-theme section#services .text-white\/80 {
+  color: rgba(0, 0, 0, 0.65) !important;
+}
+
+html.light-theme section#services .text-white {
+  color: #0f0f14 !important;
+}
+
+/* Spotlight Card in Light Mode */
+html.light-theme section#services div[class*="bg-\[\#121217\]"] {
+  background-color: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06) !important;
+}
+
+html.light-theme section#services div[class*="bg-white\/\[0\.03\]"] {
+  background-color: rgba(0, 0, 0, 0.03) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  color: #000000 !important;
+}
+
+html.light-theme section#services span[class*="bg-white\/5"] {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  color: rgba(0, 0, 0, 0.8) !important;
+}
+
+/* PROJECTS (WORK) SECTION */
+html.light-theme section#work {
+  background-color: #f8f8fb !important;
+}
+
+html.light-theme section#work h2 {
+  background: linear-gradient(180deg, #111116 30%, #666666 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+html.light-theme section#work .text-white\/50,
+html.light-theme section#work .text-white\/60,
+html.light-theme section#work .text-white\/40 {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+html.light-theme section#work .text-white {
+  color: #0f0f14 !important;
+}
+
+html.light-theme section#work .bg-white\/5 {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* TESTIMONIALS SECTION FADE MASKS */
+.testimonial-fade-left {
+  background: linear-gradient(to right, #0C0C0C 0%, transparent 100%);
+}
+
+.testimonial-fade-right {
+  background: linear-gradient(to left, #0C0C0C 0%, transparent 100%);
+}
+
+/* TESTIMONIALS SECTION (LIGHT MODE OVERRIDES) */
+html.light-theme section#testimonials {
+  background-color: #f2f2f6 !important;
+}
+
+html.light-theme .testimonial-fade-left {
+  background: linear-gradient(to right, #f2f2f6 0%, transparent 100%) !important;
+}
+
+html.light-theme .testimonial-fade-right {
+  background: linear-gradient(to left, #f2f2f6 0%, transparent 100%) !important;
+}
+
+html.light-theme section#testimonials h2,
+html.light-theme section#testimonials p {
+  color: #0f0f14 !important;
+}
+
+html.light-theme section#testimonials .testimonial-card {
+  background-color: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  color: #0f0f14 !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06) !important;
+}
+
+html.light-theme section#testimonials .testimonial-quote {
+  color: rgba(15, 15, 20, 0.85) !important;
+}
+
+html.light-theme section#testimonials .testimonial-author {
+  color: #0f0f14 !important;
+}
+
+html.light-theme section#testimonials .testimonial-role {
+  color: rgba(15, 15, 20, 0.6) !important;
+}
+
+/* CONTACT SECTION */
+html.light-theme section#contact {
+  background-color: #f0f0f4 !important;
+  border-top-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+html.light-theme section#contact h2 {
+  color: #0f0f14 !important;
+}
+
+html.light-theme section#contact p {
+  color: rgba(0, 0, 0, 0.65) !important;
+}
+
+html.light-theme section#contact .text-white\/45,
+html.light-theme section#contact .text-white\/60 {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+/* FOOTER SECTION */
+html.light-theme footer {
+  background-color: #e5e5eb !important;
+  color: #0f0f14 !important;
+  border-top-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+html.light-theme footer p,
+html.light-theme footer a,
+html.light-theme footer span {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+html.light-theme footer a:hover {
+  color: #000000 !important;
+}
+
+
