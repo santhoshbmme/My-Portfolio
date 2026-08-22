@@ -109,18 +109,8 @@ export const portfolioData = {
       link: "https://mithstudio.netlify.app/"
     },
     {
-      id: "wisewealth",
-      num: "02",
-      title: "WiseWealth",
-      category: "Fintech Web App",
-      description: "A comprehensive wealth management and personal finance portal featuring interactive dashboard grids, charts, and clean data visualizations.",
-      tags: ["React", "Tailwind CSS", "ChartJS", "TypeScript"],
-      image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1200&auto=format&fit=crop", // Dashboard layout concept
-      link: "#"
-    },
-    {
       id: "mani-sports",
-      num: "03",
+      num: "02",
       title: "Mani Sports Academy",
       category: "Service Presentation",
       description: "A service-oriented, bold sports academy website with class scheduling, registration forms, and an action-focused modern visual design.",
@@ -130,7 +120,7 @@ export const portfolioData = {
     },
     {
       id: "creative-landing",
-      num: "04",
+      num: "03",
       title: "Creative Landing Page",
       category: "Design Concept",
       description: "An experimental, interactive single-page website focusing on typography layouts, image hover reveals, and micro-interactions.",
