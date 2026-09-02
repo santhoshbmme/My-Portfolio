@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Caveat:wght@600&family=Permanent+Marker&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Permanent+Marker&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-brush: 'Caveat', 'Permanent Marker', cursive;
+  --font-brush: 'Permanent Marker', cursive;
   
   --color-bg-dark: #0C0C0C;
   --color-surface-dark: #121212;
@@ -339,6 +339,56 @@ html.light-theme footer span {
 
 html.light-theme footer a:hover {
   color: #000000 !important;
+}
+
+/* PORTAVIA HERO SECTION THEME STYLES */
+section#home {
+  background-color: #0C0C0D;
+  color: #FFFFFF;
+}
+
+section#home .portavia-title {
+  color: #FFFFFF;
+}
+
+section#home .portavia-subtitle {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+section#home .portavia-card-bg {
+  background-color: #161618;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+section#home .portavia-pill {
+  background-color: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* PORTAVIA HERO (LIGHT MODE OVERRIDES) */
+html.light-theme section#home {
+  background-color: #F4F4F4 !important;
+  color: #121212 !important;
+}
+
+html.light-theme section#home .portavia-title {
+  color: #121212 !important;
+}
+
+html.light-theme section#home .portavia-subtitle {
+  color: rgba(18, 18, 18, 0.65) !important;
+}
+
+html.light-theme section#home .portavia-card-bg {
+  background-color: #E8E8E8 !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+html.light-theme section#home .portavia-pill {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  color: rgba(18, 18, 18, 0.85) !important;
 }
 
 

@@ -1,195 +1,194 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { portfolioData } from "../data/portfolioData";
+import { ArrowUpRight, Sparkles, MapPin } from "lucide-react";
 import avatarImg from "../assets/avatar.png";
-import { ArrowUpRight } from "lucide-react";
 
 /**
- * Portavia-inspired Luxury Editorial Hero Section.
- * Features a minimalist warm ivory canvas (#F7F6F2), bold typography,
- * monochrome tech stack indicators, cutout blazer portrait with warm beige
- * geometric blocks and handwritten script accents, and a bottom stats bar.
+ * Portavia Framer-inspired Editorial Hero Section.
+ * Replaces the split screen with Portavia's iconic 3-column layout:
+ * - Left Headline: "DIGITAL" with developer label
+ * - Center Portrait: Vertical rounded card with interactive royal blue hover circle ("👋" -> "Hi!")
+ * - Right Headline: "DEVELOPER" with bio description & direct CTAs
  */
 export const Hero: React.FC = () => {
-  const techStack = [
-    {
-      name: "HTML5",
-      svg: (
-        <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-          <path d="M1.5 0h21l-1.91 21.563L11.97 24l-8.564-2.438L1.5 0zm7.031 9.75l-.232-2.718 10.059.003.23-2.622-12.903-.002.69 8.057h8.766l-.37 4.233-3.23.874-3.256-.874-.207-2.392H5.64l.394 4.542 5.938 1.624 5.922-1.624.793-9.098H8.531z" />
-        </svg>
-      ),
-    },
-    {
-      name: "CSS3",
-      svg: (
-        <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-          <path d="M1.5 0h21l-1.91 21.563L11.97 24l-8.564-2.438L1.5 0zm7.031 9.75l-.232-2.718 10.059.003.23-2.622-12.903-.002.69 8.057h8.766l-.37 4.233-3.23.874-3.256-.874-.207-2.392H5.64l.394 4.542 5.938 1.624 5.922-1.624.793-9.098H8.531z" />
-        </svg>
-      ),
-    },
-    {
-      name: "JavaScript",
-      svg: (
-        <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-          <path d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.465.735-.63 1.29-.525.54.12.96.48 1.275.945.315.465.735.615 1.155.33.405-.285.57-.735.255-1.275-.54-.885-1.395-1.41-2.46-1.56-1.125-.15-2.22.255-2.775 1.05-.51.72-.45 1.74.045 2.43.645.915 1.77 1.275 2.76 1.695.84.345 1.5.705 1.56 1.35.075.765-.54 1.245-1.515 1.245-1.02 0-1.65-.585-2.1-1.395-.27-.495-.735-.6-1.17-.345-.39.24-.51.72-.255 1.245.72 1.365 1.95 2.07 3.51 2.07 1.83 0 3.06-1.035 3.255-2.61.015-.09.015-.195 0-.285zm-8.85-4.47h-1.92v6.195c0 1.545-.795 2.265-2.16 2.265-.63 0-1.29-.195-1.695-.51-.315-.255-.48-.615-.315-1.005.18-.39.585-.495.96-.285.255.135.54.24.84.24.51 0 .765-.3.765-.96v-5.94H7.744v-1.635h5.44v1.635z" />
-        </svg>
-      ),
-    },
-    {
-      name: "React",
-      svg: (
-        <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-          <path d="M12 9a3 3 0 100 6 3 3 0 000-6zm0-2a5 5 0 110 10 5 5 0 010-10zm0-7c-4.97 0-9 1.79-9 4s4.03 4 9 4 9-1.79 9-4-4.03-4-9-4zm0 6c-3.86 0-7-1.19-7-2s3.14-2 7-2 7 1.19 7 2-3.14 2-7 2zm-8.66 9c-2.48 4.31.25 8.35 4.56 8.35 4.31 0 7.04-4.04 4.56-8.35-2.48-4.31-6.64-4.31-9.12 0zm1.73 1c1.93-3.34 5.07-3.34 7 0-1.93 3.34-5.07 3.34-7 0zm15.46-1c-2.48-4.31-6.64-4.31-9.12 0-2.48 4.31.25 8.35 4.56 8.35 4.31 0 7.04-4.04 4.56-8.35zm-1.73 1c-1.93 3.34-5.07 3.34-7 0 1.93-3.34 5.07-3.34 7 0z" />
-        </svg>
-      ),
-    },
-    {
-      name: "WordPress",
-      svg: (
-        <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-          <path d="M12 0C5.37 0 0 5.37 0 12c0 6.63 5.37 12 12 12 6.63 0 12-5.37 12-12C24 5.37 18.63 0 12 0zm-.66 21.78c-4.14 0-7.66-2.8-8.7-6.68L7.86 3.65c.34-.02.76-.04 1.1-.04.48 0 .84.08 1.34.08h.04v.68h-.76c-.46 0-.82.38-.82.84v6.86c0 .46.36.84.82.84h.76v.68h-3.38v-.68h.76c.46 0 .82-.38.82-.84V7.21l-3.3 9.49-1.1-3.17c.56-2.92 3.12-5.11 6.18-5.11 1.76 0 3.36.72 4.5 1.88l-2.02 5.82-1.98-4.34c-.16-.36-.5-.58-.9-.58h-.02c-.44 0-.82.26-.98.66l-2.04 5.12-2.14-5.78z" />
-        </svg>
-      ),
-    },
-  ];
-
-  const stats = [
-    { value: "10+", label: "Projects Completed" },
-    { value: "5+", label: "Happy Clients" },
-    { value: "2+", label: "Years Experience" },
-    { value: "100%", label: "Client Satisfaction" },
-  ];
+  const [isCircleHovered, setIsCircleHovered] = useState(false);
 
   return (
     <section
       id="home"
-      className="relative min-h-screen w-full bg-[#F7F6F2] text-[#111111] overflow-hidden pt-28 md:pt-36 pb-16 flex flex-col justify-between"
+      className="relative min-h-screen w-full transition-colors duration-500 flex flex-col justify-between pt-24 pb-8 px-6 sm:px-10 lg:px-16 overflow-hidden select-none"
     >
-      {/* ── Main 2-Column Hero Content ────────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center flex-1 my-auto">
-        
-        {/* LEFT COLUMN — Editorial Bio & Actions */}
+      {/* ── TOP META BAR (Subtle Status & Label) ────────────────────────── */}
+      <div className="w-full flex items-center justify-between z-10 mb-6 lg:mb-10">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="lg:col-span-6 flex flex-col justify-center"
+          transition={{ duration: 0.6 }}
+          className="flex items-center gap-2"
         >
-          {/* Eyebrow */}
-          <p className="text-xs md:text-sm font-bold tracking-[0.3em] uppercase text-[#666666] mb-3">
-            HELLO, I’M
-          </p>
-
-          {/* Main Heading — Name */}
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-black uppercase tracking-tight leading-[0.95] text-[#111111] mb-3">
-            Santhosh M.
-          </h1>
-
-          {/* Subheading */}
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#111111] tracking-tight mb-5">
-            Web Developer &amp; Designer
-          </h2>
-
-          {/* Paragraph */}
-          <p className="text-sm md:text-base text-[#666666] font-normal leading-relaxed max-w-[460px] mb-8">
-            I design &amp; develop modern websites that are fast, responsive and built to perform.
-          </p>
-
-          {/* Primary CTA Button */}
-          <div className="mb-10">
-            <a
-              href="#work"
-              className="inline-flex items-center gap-3 px-7 py-4 rounded-xl bg-[#111111] text-white text-xs font-bold tracking-widest uppercase shadow-lg shadow-black/10 hover:-translate-y-0.5 transition-all duration-300 focus:outline-none"
-            >
-              <span>View My Work</span>
-              <ArrowUpRight size={16} />
-            </a>
-          </div>
-
-          {/* Tech Stack Bar */}
-          <div className="pt-4 border-t border-[#111111]/10 max-w-[460px]">
-            <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-[#666666] mb-3">
-              TECH I WORK WITH
-            </p>
-            <div className="flex items-center gap-6 text-[#111111]/80">
-              {techStack.map((tech) => (
-                <div key={tech.name} className="hover:text-[#111111] hover:scale-110 transition-all duration-200" title={tech.name}>
-                  {tech.svg}
-                </div>
-              ))}
-            </div>
-          </div>
+          <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
+          <span className="portavia-subtitle text-xs font-bold uppercase tracking-[0.25em]">
+            {portfolioData.personalInfo.name}
+          </span>
         </motion.div>
 
-        {/* RIGHT COLUMN — Blazer Cutout Portrait & Geometric Accents */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="lg:col-span-6 relative flex items-center justify-center min-h-[420px] md:min-h-[520px]"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="portavia-pill px-4 py-1.5 rounded-full text-xs font-mono font-medium flex items-center gap-2 border shadow-sm"
         >
-          {/* Decorative Warm Beige Block behind Portrait */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[78%] h-[82%] bg-[#E8DED0] rounded-3xl -rotate-2 z-0" />
-
-          {/* Subtle Dotted Grid Pattern in Top-Right Corner */}
-          <div
-            className="absolute top-4 right-8 w-24 h-24 z-0 opacity-25 pointer-events-none"
-            style={{
-              backgroundImage: "radial-gradient(#111111 1.5px, transparent 1.5px)",
-              backgroundSize: "12px 12px",
-            }}
-          />
-
-          {/* Subtle Radial Warm Glow */}
-          <div className="absolute inset-0 bg-amber-200/20 rounded-full blur-[100px] pointer-events-none z-0" />
-
-          {/* Main Portrait Cutout */}
-          <div className="relative z-10 w-full flex justify-center">
-            <img
-              src={avatarImg}
-              alt="Santhosh M. — Web Developer & Designer"
-              className="h-[480px] sm:h-[560px] md:h-[620px] lg:h-[680px] w-auto object-contain filter drop-shadow-[0_20px_40px_rgba(0,0,0,0.15)] select-none"
-            />
-          </div>
-
-          {/* Handwritten Script Accent (Top-Right of Portrait) */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className="absolute top-8 right-0 md:-right-4 z-20 pointer-events-none bg-[#F7F6F2]/90 backdrop-blur-sm px-4 py-2.5 rounded-2xl border border-[#111111]/10 shadow-sm"
-          >
-            <p className="font-brush text-sm md:text-base text-[#111111] leading-tight">
-              Let’s build<br />something great.
-            </p>
-            <div className="h-[2px] w-12 bg-[#C9A982] rounded-full mt-1" />
-          </motion.div>
-
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+          <span>Available for work · 2026</span>
         </motion.div>
-
       </div>
 
-      {/* ── Bottom Horizontal Stats Bar ───────────────────────────────────── */}
+      {/* ── MAIN 3-COLUMN EDITORIAL HERO GRID ───────────────────────────── */}
+      <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center z-10 my-auto py-4">
+        
+        {/* LEFT COLUMN: Eyebrow + "DIGITAL" */}
+        <motion.div
+          initial={{ opacity: 0, x: -40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="lg:col-span-4 flex flex-col justify-center text-left"
+        >
+          <div className="inline-flex items-center gap-2 mb-2">
+            <Sparkles size={14} className="text-indigo-500" />
+            <span className="text-xs font-mono font-bold tracking-[0.2em] uppercase text-indigo-500">
+              Creative Portfolio
+            </span>
+          </div>
+
+          <h1 className="portavia-title text-[15vw] sm:text-[12vw] lg:text-[7vw] font-black uppercase tracking-tighter leading-[0.88] select-none">
+            DIGITAL
+          </h1>
+
+          <p className="portavia-subtitle text-xs sm:text-sm font-medium mt-4 max-w-xs leading-relaxed hidden sm:block">
+            Crafting high-end, responsive, and visually memorable digital interfaces.
+          </p>
+        </motion.div>
+
+        {/* CENTER COLUMN: Vertical Portrait Card with Interactive Blue Accent Circle */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.92, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          className="lg:col-span-4 flex items-center justify-center relative my-4 lg:my-0"
+        >
+          <div className="relative group w-[270px] sm:w-[310px] lg:w-[340px] h-[370px] sm:h-[430px] lg:h-[470px]">
+            {/* Main Rounded Portrait Frame */}
+            <div className="w-full h-full rounded-[36px] overflow-hidden portavia-card-bg border shadow-2xl relative transition-transform duration-500 group-hover:scale-[1.02]">
+              <img
+                src={avatarImg}
+                alt="Santhosh M"
+                className="w-full h-full object-cover object-center filter grayscale contrast-110 group-hover:grayscale-0 transition-all duration-700"
+              />
+              {/* Bottom Gradient Protection */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
+              
+              <div className="absolute bottom-6 right-6 text-white text-right">
+                <p className="text-xs font-mono uppercase tracking-widest text-white/70">Coimbatore</p>
+                <p className="text-sm font-extrabold uppercase tracking-tight">Santhosh M.</p>
+              </div>
+            </div>
+
+            {/* Floating Royal Blue Accent Circle (Portavia Signature Element) */}
+            <a
+              href={portfolioData.personalInfo.whatsapp}
+              target="_blank"
+              rel="noreferrer"
+              onMouseEnter={() => setIsCircleHovered(true)}
+              onMouseLeave={() => setIsCircleHovered(false)}
+              className="absolute -bottom-4 -left-4 w-18 h-18 sm:w-22 sm:h-22 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center shadow-2xl cursor-pointer z-30 transition-all duration-300 transform hover:scale-110 active:scale-95 border-2 border-white/20"
+              aria-label="Connect on WhatsApp"
+            >
+              <motion.div
+                key={isCircleHovered ? "hi" : "wave"}
+                initial={{ scale: 0.5, rotate: -20, opacity: 0 }}
+                animate={{ scale: 1, rotate: 0, opacity: 1 }}
+                exit={{ scale: 0.5, opacity: 0 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="flex items-center justify-center font-black text-xl sm:text-2xl"
+              >
+                {isCircleHovered ? (
+                  <span className="text-base sm:text-lg font-black tracking-tight uppercase">Hi! 👋</span>
+                ) : (
+                  <span>👋</span>
+                )}
+              </motion.div>
+            </a>
+          </div>
+        </motion.div>
+
+        {/* RIGHT COLUMN: "DEVELOPER" + Bio Description & CTA Button */}
+        <motion.div
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="lg:col-span-4 flex flex-col justify-center text-left lg:text-left"
+        >
+          <h1 className="portavia-title text-[15vw] sm:text-[12vw] lg:text-[7vw] font-black uppercase tracking-tighter leading-[0.88] select-none">
+            DEVELOPER
+          </h1>
+
+          <p className="portavia-subtitle text-sm sm:text-base font-normal mt-5 max-w-md leading-relaxed">
+            I’m <strong className="font-extrabold portavia-title">Santhosh M</strong>, a web developer passionate about building visually striking, interactive, and modern digital experiences.
+          </p>
+
+          <div className="mt-8 flex flex-wrap items-center gap-4">
+            <a
+              href={portfolioData.personalInfo.whatsapp}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-black uppercase tracking-[0.2em] shadow-xl hover:shadow-indigo-500/30 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0"
+            >
+              <span>Let's Talk</span>
+              <ArrowUpRight size={16} />
+            </a>
+
+            <a
+              href="#work"
+              className="portavia-pill px-6 py-3.5 rounded-full text-xs font-mono font-bold uppercase tracking-wider border hover:border-indigo-500/50 transition-colors"
+            >
+              View Work
+            </a>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* ── BOTTOM BAR (Location & Social Links) ────────────────────────── */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4, duration: 0.8 }}
-        className="max-w-7xl mx-auto px-6 md:px-12 w-full mt-12 z-20"
+        transition={{ duration: 0.6, delay: 0.5 }}
+        className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-black/10 dark:border-white/10 z-10"
       >
-        <div className="bg-white rounded-2xl md:rounded-3xl border border-[#111111]/10 shadow-[0_10px_30px_rgba(0,0,0,0.04)] p-6 md:p-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-[#111111]/10">
-          {stats.map((stat, i) => (
-            <div key={i} className={`${i > 0 ? "pt-4 md:pt-0" : ""}`}>
-              <p className="text-3xl md:text-4xl font-black text-[#111111] tracking-tight mb-1">
-                {stat.value}
-              </p>
-              <p className="text-xs md:text-sm font-medium text-[#666666] tracking-wide">
-                {stat.label}
-              </p>
-            </div>
-          ))}
+        <div className="flex items-center gap-2 portavia-subtitle text-xs font-mono">
+          <MapPin size={14} className="text-indigo-500" />
+          <span>Coimbatore, India</span>
+        </div>
+
+        <div className="flex items-center gap-6">
+          <a
+            href={portfolioData.personalInfo.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            className="portavia-subtitle text-xs font-mono font-bold uppercase tracking-widest hover:text-indigo-500 transition-colors"
+          >
+            LinkedIn
+          </a>
+          <a
+            href={portfolioData.personalInfo.instagram}
+            target="_blank"
+            rel="noreferrer"
+            className="portavia-subtitle text-xs font-mono font-bold uppercase tracking-widest hover:text-indigo-500 transition-colors"
+          >
+            Instagram
+          </a>
         </div>
       </motion.div>
-
     </section>
   );
 };

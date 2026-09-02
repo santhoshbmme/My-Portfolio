@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sun, Moon, ArrowUpRight } from "lucide-react";
-import { portfolioData } from "../data/portfolioData";
+import { Menu, X, Sun, Moon } from "lucide-react";
 
 interface NavLink {
   label: string;
@@ -9,21 +8,22 @@ interface NavLink {
 }
 
 /**
- * Editorial Navbar component matching high-end personal brand aesthetic.
- * Features top-left "Santhosh M.", centered navigation with active indicator,
- * and top-right "Let's Talk ↗" rounded button + theme toggle.
+ * Sticky navigation bar component with fluid mobile overlays.
+ * Only visible when the user is within the Hero (home) section.
+ * Smoothly fades out once the user scrolls past it.
  */
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  /** True only while the viewport is inside the #home section */
   const [isOnHome, setIsOnHome] = useState(true);
 
   // Theme Mode State ("dark" | "light")
   const [theme, setTheme] = useState<"dark" | "light">(() => {
     if (typeof window !== "undefined") {
-      return (localStorage.getItem("theme") as "dark" | "light") || "light";
+      return (localStorage.getItem("theme") as "dark" | "light") || "dark";
     }
-    return "light";
+    return "dark";
   });
 
   useEffect(() => {
@@ -45,10 +45,13 @@ export const Navbar: React.FC = () => {
     { label: "About", href: "#about" },
     { label: "Services", href: "#services" },
     { label: "Work", href: "#work" },
-    { label: "Contact", href: "#contact" },
   ];
 
   useEffect(() => {
+    /**
+     * Scroll listener: updates isScrolled (for glass bg) and isOnHome
+     * (to show/hide the whole navbar).
+     */
     const handleScroll = () => {
       const heroEl = document.getElementById("home");
       const heroHeight = heroEl ? heroEl.offsetHeight : window.innerHeight;
@@ -56,11 +59,13 @@ export const Navbar: React.FC = () => {
       setIsOnHome(window.scrollY < heroHeight - 80);
     };
 
+    // Run once on mount so initial state is correct
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Prevent scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -72,6 +77,9 @@ export const Navbar: React.FC = () => {
     };
   }, [mobileMenuOpen]);
 
+  /**
+   * Closes the mobile navigation drawer.
+   */
   const handleMobileLinkClick = () => {
     setMobileMenuOpen(false);
   };
@@ -88,78 +96,66 @@ export const Navbar: React.FC = () => {
         transition={{ duration: 0.4, ease: "easeInOut" }}
         className={`fixed top-0 left-0 w-full z-50 transition-colors duration-300 ${
           isScrolled
-            ? "bg-[#F7F6F2]/90 backdrop-blur-md border-b border-[#111111]/10 py-4 shadow-sm"
+            ? "bg-bg-dark/75 backdrop-blur-md border-b border-border-subtle py-4"
             : "bg-transparent py-6"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
-          
-          {/* Top Left — Brand */}
-          <a
-            href="#home"
-            className="text-lg md:text-xl font-black tracking-tight text-[#111111] hover:opacity-80 transition-opacity"
-          >
-            Santhosh M.
-          </a>
-
-          {/* Top Center — Nav Links */}
+        <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-center">
           <nav className="hidden lg:flex items-center gap-8">
             {navLinks.map((link, idx) => {
-              const isHome = idx === 0;
+              // Split background when un-scrolled: idx 0,1 over white (black text), idx 2,3 over black (white text)
+              let textColorClass = "";
+              if (!isScrolled) {
+                if (idx < 2) {
+                  textColorClass = "text-black/70 hover:text-black";
+                } else {
+                  textColorClass = "text-white/70 hover:text-white";
+                }
+              } else {
+                textColorClass = "text-white/60 hover:text-white";
+              }
+
               return (
                 <a
                   key={link.label}
                   href={link.href}
-                  className="relative text-xs font-semibold tracking-wider text-[#111111]/70 hover:text-[#111111] py-1 transition-colors duration-300 focus:outline-none group"
+                  className={`relative text-xs font-semibold tracking-widest uppercase py-2 transition-colors duration-300 focus:outline-none ${textColorClass}`}
                 >
                   {link.label}
-                  {/* Subtle active underline for Home */}
-                  {isHome ? (
-                    <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#111111] rounded-full" />
-                  ) : (
-                    <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#111111] rounded-full transition-all duration-300 group-hover:w-full" />
-                  )}
                 </a>
               );
             })}
-          </nav>
 
-          {/* Top Right — Let's Talk CTA & Theme Toggle */}
-          <div className="hidden lg:flex items-center gap-4">
+            {/* Theme Toggle Button (Dark / Light mode) */}
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-full border border-[#111111]/15 bg-white/60 hover:bg-white transition-all duration-300 focus:outline-none cursor-pointer shadow-sm text-[#111111]"
+              className="p-2 rounded-full border border-white/15 bg-white/10 hover:bg-white/20 transition-all duration-300 focus:outline-none cursor-pointer ml-2 shadow-sm"
               aria-label="Toggle Theme Mode"
               title={`Switch to ${theme === "dark" ? "Light" : "Dark"} Mode`}
             >
               {theme === "dark" ? (
-                <Sun size={15} className="text-amber-500" />
+                <Sun size={15} className="text-amber-400" />
               ) : (
                 <Moon size={15} className="text-purple-600" />
               )}
             </button>
-
-            <a
-              href={portfolioData.personalInfo.whatsapp}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#111111]/20 bg-transparent text-xs font-semibold tracking-wider text-[#111111] hover:bg-[#111111] hover:text-white transition-all duration-300 focus:outline-none cursor-pointer"
-            >
-              <span>Let’s Talk</span>
-              <ArrowUpRight size={13} />
-            </a>
-          </div>
+          </nav>
 
           {/* Hamburger Menu Toggle for Mobile */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-[#111111] focus:outline-none"
+            className={`lg:hidden p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 rounded transition-colors duration-300 ${
+              mobileMenuOpen 
+                ? "text-white" 
+                : isScrolled 
+                  ? "text-white/80 hover:text-white" 
+                  : "text-black/80 hover:text-black"
+            }`}
             aria-label="Toggle Navigation Menu"
             aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
-
         </div>
       </motion.header>
 
@@ -171,7 +167,7 @@ export const Navbar: React.FC = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-[#F7F6F2] flex flex-col justify-center items-center lg:hidden"
+            className="fixed inset-0 z-40 bg-bg-dark/98 backdrop-blur-lg flex flex-col justify-center items-center lg:hidden"
           >
             <nav className="flex flex-col items-center gap-8 text-center">
               {navLinks.map((link, index) => {
@@ -183,7 +179,7 @@ export const Navbar: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05, duration: 0.4 }}
-                    className="text-xl font-bold tracking-wider text-[#111111] hover:opacity-70 transition-opacity"
+                    className="text-xl font-bold tracking-widest uppercase transition-colors focus:outline-none text-white/70 hover:text-white"
                   >
                     {link.label}
                   </motion.a>
@@ -194,31 +190,20 @@ export const Navbar: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: navLinks.length * 0.05, duration: 0.4 }}
-                className="mt-6 flex flex-col items-center gap-4"
+                className="mt-6 flex items-center gap-3"
               >
-                <a
-                  href={portfolioData.personalInfo.whatsapp}
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={handleMobileLinkClick}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#111111] text-white text-xs font-bold uppercase tracking-widest"
-                >
-                  <span>Let’s Talk</span>
-                  <ArrowUpRight size={14} />
-                </a>
-
                 <button
                   onClick={toggleTheme}
-                  className="px-5 py-2.5 rounded-full border border-[#111111]/20 bg-white text-[#111111] font-bold text-xs uppercase tracking-widest flex items-center gap-2 cursor-pointer"
+                  className="px-5 py-2.5 rounded-full border border-white/20 bg-white/10 text-white font-bold text-xs uppercase tracking-widest flex items-center gap-2 cursor-pointer"
                 >
                   {theme === "dark" ? (
                     <>
-                      <Sun size={15} className="text-amber-500" />
+                      <Sun size={15} className="text-amber-400" />
                       <span>Light Mode</span>
                     </>
                   ) : (
                     <>
-                      <Moon size={15} className="text-purple-600" />
+                      <Moon size={15} className="text-purple-400" />
                       <span>Dark Mode</span>
                     </>
                   )}
